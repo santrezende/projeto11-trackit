@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import HomePage from "./HomePage/HomePage";
+import SingUp from "./SingUp/SingUp";
+import Habits from "./Habits/Habits";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/cadastro" element={<SingUp />} />
+          <Route path="/habitos" element={<Habits />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
-
-export default App;
