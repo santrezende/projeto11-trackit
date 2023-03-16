@@ -44,6 +44,10 @@ button{
     background: #52B6FF;
     border-radius: 4.63636px;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     font-size: 20px;
     font-family: 'Lexend Deca';
     font-style: normal;

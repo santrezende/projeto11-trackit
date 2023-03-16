@@ -28,6 +28,15 @@ const GlobalStyle = createGlobalStyle`
 		}
 		
 	}
+
+    .my-spinner {
+    outline: none !important;
+    border: none !important;
+}
+.my-spinner:hover{
+    outline: none !important;
+    border: none !important;
+}
 `
 
 export default GlobalStyle

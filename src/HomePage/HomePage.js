@@ -1,18 +1,49 @@
 import img from "../assets/trackit.png"
 import { InitialScreen } from "../components/InitialScreen";
 import { useNavigate } from "react-router-dom";
+import React from "react";
+import { ThreeDots } from 'react-loader-spinner';
+import axios from "axios";
 
 export default function HomePage() {
     const navigate = useNavigate();
+
+    const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
+
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [loading, setLoading] = React.useState(false);
+
+    const templateLogin = {
+        email: email,
+        password: password
+    }
+
+    function logIn() {
+        setLoading(true);
+        const promise = axios.post(url, templateLogin);
+
+        promise.then(() => {
+            navigate("/hoje");
+            setLoading(false);
+        });
+
+        promise.catch((error) => {
+            alert(error.response.data.details);
+            setLoading(false);
+        })
+    }
 
     return (
         <InitialScreen>
             <img src={img} />
             <h1>TrackIt</h1>
             <form>
-                <input data-test="email-input" type="email" placeholder="email" />
-                <input data-test="password-input" type="password" placeholder="senha" />
-                <button data-test="login-btn" type="submit" onClick={() => navigate("/habitos")}>Entrar</button>
+                <input data-test="email-input" disabled={loading} type="email" placeholder="email" value={email} onChange={event => setEmail(event.target.value)} />
+                <input data-test="password-input" disabled={loading} type="password" placeholder="senha" value={password} onChange={event => setPassword(event.target.value)} />
+                <button style={loading ? { opacity: 0.7 } : null} data-test="login-btn" disabled={loading} type="button" onClick={logIn}>
+                    {loading ? <ThreeDots color="#FAFAFA" size={30} /> : "Entrar"}
+                </button>
             </form>
             <p data-test="signup-link" onClick={() => navigate("/cadastro")}>Não tem uma conta? Cadastre-se!</p>
         </InitialScreen>
