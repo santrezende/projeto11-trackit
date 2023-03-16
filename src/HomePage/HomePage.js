@@ -10,11 +10,11 @@ export default function HomePage() {
             <img src={img} />
             <h1>TrackIt</h1>
             <form>
-                <input type="email" placeholder="email" />
-                <input type="password" placeholder="senha" />
-                <button type="submit" onClick={() => navigate("/habitos")}>Entrar</button>
+                <input data-test="email-input" type="email" placeholder="email" />
+                <input data-test="password-input" type="password" placeholder="senha" />
+                <button data-test="login-btn" type="submit" onClick={() => navigate("/habitos")}>Entrar</button>
             </form>
-            <p onClick={() => navigate("/cadastro")}>Não tem uma conta? Cadastre-se!</p>
+            <p data-test="signup-link" onClick={() => navigate("/cadastro")}>Não tem uma conta? Cadastre-se!</p>
         </InitialScreen>
     )
 }
