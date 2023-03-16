@@ -1,10 +1,16 @@
 import { createGlobalStyle } from "styled-components"
 
 const GlobalStyle = createGlobalStyle`
+    div {
+        box-sizing: border-box;
+    }
+
 	button {
 		appearance: none;
         border: none;
         outline: none;
+        box-sizing: border-box;
+        cursor: pointer;
 	}
 
 	input {

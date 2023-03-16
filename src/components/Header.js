@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-export const Header = styled.div`
+export const Header = styled.header`
+box-sizing: border-box;
 background-color: #126BA5;
 position: fixed;
 top: 0;
@@ -11,8 +12,7 @@ box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 display: flex;
 justify-content: space-between;
 align-items: center;
-padding-left: 20px;
-padding-right: 20px;
+padding: 0 20px;
 
 h1{
     font-family: "Playball";
@@ -26,6 +26,5 @@ img{
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    margin-right: 40px;
 }
 `

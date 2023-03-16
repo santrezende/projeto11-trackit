@@ -1,5 +1,5 @@
 import img from "../assets/trackit.png"
-import { InitialScreen, Screen } from "../components/InitialScreen";
+import { InitialScreen } from "../components/InitialScreen";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
