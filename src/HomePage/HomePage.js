@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { ThreeDots } from 'react-loader-spinner';
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
     const navigate = useNavigate();
@@ -45,7 +46,9 @@ export default function HomePage() {
                     {loading ? <ThreeDots color="#FAFAFA" size={30} /> : "Entrar"}
                 </button>
             </form>
-            <p data-test="signup-link" onClick={() => navigate("/cadastro")}>Não tem uma conta? Cadastre-se!</p>
+            <Link data-test="signup-link" to={"/cadastro"}>
+                <p>Não tem uma conta? Cadastre-se!</p>
+            </Link>
         </InitialScreen>
     )
 }

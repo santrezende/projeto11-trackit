@@ -3,6 +3,8 @@ import { InitialScreen, Screen } from "../components/InitialScreen"
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import axios from "axios";
+import { ThreeDots } from 'react-loader-spinner';
+import { Link } from "react-router-dom";
 
 export default function SingUp() {
     const navigate = useNavigate();
@@ -49,9 +51,11 @@ export default function SingUp() {
                 <input data-test="password-input" disabled={isSubmitting} value={password} type="password" placeholder="senha" onChange={event => setPassword(event.target.value)} />
                 <input data-test="user-name-input" disabled={isSubmitting} value={name} type="text" placeholder="nome" onChange={event => setName(event.target.value)} />
                 <input data-test="user-image-input" disabled={isSubmitting} value={image} type="url" placeholder="foto" onChange={event => setImage(event.target.value)} />
-                <button data-test="signup-btn" disabled={isSubmitting} onClick={registerAccount} type="button">Cadastrar</button>
+                <button data-test="signup-btn" disabled={isSubmitting} onClick={registerAccount} type="button">{isSubmitting ? <ThreeDots color="#FAFAFA" size={30} /> : "Cadastrar"}</button>
             </form>
-            <p data-test="login-link" onClick={() => navigate("/")}>Já tem uma conta? Faça login!</p>
+            <Link data-test="login-link" to={"/"}>
+                <p>Já tem uma conta? Faça login!</p>
+            </Link>
         </InitialScreen>
     )
 }
