@@ -27,5 +27,6 @@ height: 10vh;
         font-weight: 400;
         font-size: 27px;
         color: #FFFFFF;
+        margin-top: 10px;
     }
 `

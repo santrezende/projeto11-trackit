@@ -6,7 +6,7 @@ import { ThreeDots } from 'react-loader-spinner';
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function HomePage() {
+export default function HomePage(props) {
     const navigate = useNavigate();
 
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
@@ -24,7 +24,9 @@ export default function HomePage() {
         setLoading(true);
         const promise = axios.post(url, templateLogin);
 
-        promise.then(() => {
+        promise.then((res) => {
+            props.setToken(res.data.token);
+            props.setImageURL(res.data.image);
             navigate("/hoje");
             setLoading(false);
         });

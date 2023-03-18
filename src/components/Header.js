@@ -1,6 +1,21 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import Context from "../Context";
+import React, { useContext } from "react";
 
-export const Header = styled.header`
+export default function Header() {
+    const navigate = useNavigate();
+    const context = useContext(Context);
+
+    return (
+        <HeaderContainer>
+            <h1 onClick={() => navigate("/")}>TrackIt</h1>
+            <img src={context.imageURL} />
+        </HeaderContainer>
+    )
+}
+
+export const HeaderContainer = styled.header`
 box-sizing: border-box;
 background-color: #126BA5;
 position: fixed;
@@ -13,6 +28,7 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 padding: 0 20px;
+z-index: 1;
 
 h1{
     font-family: "Playball";
@@ -26,5 +42,6 @@ img{
     width: 50px;
     height: 50px;
     border-radius: 100%;
+    z-index: 1;
 }
 `

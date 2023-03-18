@@ -1,6 +1,19 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-export const Footer = styled.footer`
+export default function Menu() {
+    const navigate = useNavigate();
+
+    return (
+        <Footer>
+            <SideBtn onClick={() => navigate("/habitos")}>Habitos</SideBtn>
+            <CenterBtn onClick={() => navigate("/hoje")}>Hoje</CenterBtn>
+            <SideBtn onClick={() => navigate("/historico")}>Historico</SideBtn>
+        </Footer>
+    )
+}
+
+const Footer = styled.footer`
 background-color: #FFFFFF;
 position: fixed;
 bottom: 0;
@@ -13,7 +26,7 @@ justify-content: space-around;
 align-items: center;
 `
 
-export const SideBtn = styled.button`
+const SideBtn = styled.button`
 background-color: #FFFFFF;
 display: flex;
 justify-content: center;
@@ -28,15 +41,15 @@ font-size: 18px;
 color: #52B6FF;
 `
 
-export const CenterBtn = styled.button`
+const CenterBtn = styled.button`
 display: flex;
 justify-content: center;
 align-items: center;
 background-color: #52B6FF;
-width: 90px;
-height: 90px;
+width: 80px;
+height: 80px;
 border-radius: 100%;
-margin-bottom: 25px;
+margin-bottom: 20px;
 
 font-family: 'Lexend Deca';
 font-style: normal;

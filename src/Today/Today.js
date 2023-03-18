@@ -1,18 +1,13 @@
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Header } from "../components/Header";
-import { Footer, SideBtn, CenterBtn } from "../components/Menu";
+import Header from "../components/Header";
+import Menu from "../components/Menu";
 import { TodayPageTitle } from "./TodayPageTitle"
 
 export default function Today() {
-    const navigate = useNavigate();
 
     return (
         <Screen>
-            <Header>
-                <h1 onClick={() => navigate("/")}>TrackIt</h1>
-                <img src="https://uploads.jovemnerd.com.br/wp-content/uploads/2023/03/naruto_episodios_ineditos__3kf0w13t5-1210x544.jpg" />
-            </Header>
+            <Header />
 
             <TodayPageTitle>
                 <p>Segunda, 17/05</p>
@@ -29,11 +24,7 @@ export default function Today() {
                 </div>
             </TodayHabitCard>
 
-            <Footer>
-                <SideBtn>Habitos</SideBtn>
-                <CenterBtn>Hoje</CenterBtn>
-                <SideBtn>Historico</SideBtn>
-            </Footer>
+            <Menu />
         </Screen>
     )
 }
