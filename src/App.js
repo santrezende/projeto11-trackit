@@ -11,8 +11,9 @@ export default function App() {
   const [imageURL, setImageURL] = React.useState("");
   const [token, setToken] = React.useState("");
   const [habits, setHabits] = React.useState([]);
+  const [habitsPercentage, setHabitsPercentage] = React.useState(0);
 
-  const contextValue = { imageURL, token, habits };
+  const contextValue = { imageURL, token, habits, habitsPercentage };
 
   return (
     <>
@@ -22,7 +23,7 @@ export default function App() {
             <Route path="/" element={<HomePage setToken={setToken} setImageURL={setImageURL} />} />
             <Route path="/cadastro" element={<SingUp />} />
             <Route path="/habitos" element={<Habits setHabits={setHabits} />} />
-            <Route path="/hoje" element={<Today />} />
+            <Route path="/hoje" element={<Today setHabitsPercentage={setHabitsPercentage} />} />
             <Route path="/historico" element={<History />} />
           </Routes>
         </BrowserRouter>

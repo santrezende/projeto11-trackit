@@ -1,13 +1,25 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import Context from "../Context";
+import { useContext } from "react";
 
 export default function Menu() {
     const navigate = useNavigate();
+    const context = useContext(Context);
 
     return (
         <Footer data-test="menu">
             <SideBtn data-test="habit-link" onClick={() => navigate("/habitos")}>Habitos</SideBtn>
-            <CenterBtn data-test="today-link" onClick={() => navigate("/hoje")}>Hoje</CenterBtn>
+            <CenterBtn data-test="today-link" onClick={() => navigate("/hoje")}>
+                <CircularProgressbar styles={buildStyles({
+                    backgroundColor: "#52B6FF",
+                    textColor: "#FFFFFF",
+                    pathColor: "#FFFFFF",
+                    trailColor: "transparent",
+                })} value={context.habitsPercentage} text={"Hoje"} />
+            </CenterBtn>
             <SideBtn data-test="history-link" onClick={() => navigate("/historico")}>Histórico</SideBtn>
         </Footer>
     )
@@ -50,10 +62,4 @@ width: 80px;
 height: 80px;
 border-radius: 100%;
 margin-bottom: 20px;
-
-font-family: 'Lexend Deca';
-font-style: normal;
-font-weight: 400;
-font-size: 18px;
-color: #FFFFFF;
 `

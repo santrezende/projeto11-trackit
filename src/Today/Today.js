@@ -8,14 +8,14 @@ import Context from "../Context";
 import React, { useContext, useEffect } from "react";
 import axios from "axios";
 
-export default function Today() {
+export default function Today(props) {
 
     const context = useContext(Context);
 
     dayjs.locale("pt-br");
-    const hoje = dayjs();
-    const diaDaSemana = hoje.format('dddd');
-    const dataFormatada = hoje.format('DD/MM');
+    const today = dayjs();
+    const weekDay = today.format('dddd');
+    const formattedDate = today.format('DD/MM');
 
     const urlToday = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
     const urlCheck = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
@@ -31,7 +31,6 @@ export default function Today() {
     };
 
     const [todayHabits, setTodayHabits] = React.useState([]);
-    const [habitsPercentage, setHabitsPercentage] = React.useState(0);
 
     useEffect(() => {
         const promise = axios.get(urlToday, config);
@@ -44,7 +43,7 @@ export default function Today() {
                 doneHabits++;
             }
         }
-        setHabitsPercentage(parseInt((doneHabits / arrayNumberHabits.length) * 100));
+        props.setHabitsPercentage(parseInt((doneHabits / arrayNumberHabits.length) * 100));
     });
 
     function checkHabit(done, id) {
@@ -64,9 +63,9 @@ export default function Today() {
             <Header />
 
             <TodayPageTitle colorPercentage={todayHabits.length > 0 ? true : false}>
-                <p data-test="today">{diaDaSemana}, {dataFormatada}</p>
+                <p data-test="today">{weekDay}, {formattedDate}</p>
                 {todayHabits.length > 0 ? (
-                    <p data-test="today-counter">{habitsPercentage}% dos hábitos concluídos</p>
+                    <p data-test="today-counter">{context.habitsPercentage}% dos hábitos concluídos</p>
                 ) : (
                     <p data-test="today-counter">Nenhum hábito concluído ainda</p>
                 )
