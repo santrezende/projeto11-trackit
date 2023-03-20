@@ -5,10 +5,10 @@ export default function Menu() {
     const navigate = useNavigate();
 
     return (
-        <Footer>
-            <SideBtn onClick={() => navigate("/habitos")}>Habitos</SideBtn>
-            <CenterBtn onClick={() => navigate("/hoje")}>Hoje</CenterBtn>
-            <SideBtn onClick={() => navigate("/historico")}>Historico</SideBtn>
+        <Footer data-test="menu">
+            <SideBtn data-test="habit-link" onClick={() => navigate("/habitos")}>Habitos</SideBtn>
+            <CenterBtn data-test="today-link" onClick={() => navigate("/hoje")}>Hoje</CenterBtn>
+            <SideBtn data-test="history-link" onClick={() => navigate("/historico")}>Histórico</SideBtn>
         </Footer>
     )
 }

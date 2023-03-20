@@ -10,8 +10,9 @@ import React from "react";
 export default function App() {
   const [imageURL, setImageURL] = React.useState("");
   const [token, setToken] = React.useState("");
+  const [habits, setHabits] = React.useState([]);
 
-  const contextValue = { imageURL, token };
+  const contextValue = { imageURL, token, habits };
 
   return (
     <>
@@ -20,7 +21,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage setToken={setToken} setImageURL={setImageURL} />} />
             <Route path="/cadastro" element={<SingUp />} />
-            <Route path="/habitos" element={<Habits />} />
+            <Route path="/habitos" element={<Habits setHabits={setHabits} />} />
             <Route path="/hoje" element={<Today />} />
             <Route path="/historico" element={<History />} />
           </Routes>

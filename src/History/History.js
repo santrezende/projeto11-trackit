@@ -31,7 +31,6 @@ padding: 0 15px;
 font-family: 'Lexend Deca';
 font-style: normal;
 font-weight: 400;
-font-size: 17.976px;
-line-height: 22px;  
+font-size: 17.976px; 
 color: #666666;
 `

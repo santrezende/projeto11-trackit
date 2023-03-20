@@ -8,7 +8,7 @@ export default function Header() {
     const context = useContext(Context);
 
     return (
-        <HeaderContainer>
+        <HeaderContainer data-test="header">
             <h1 onClick={() => navigate("/")}>TrackIt</h1>
             <img src={context.imageURL} />
         </HeaderContainer>

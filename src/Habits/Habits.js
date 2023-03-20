@@ -7,7 +7,7 @@ import Context from "../Context";
 import React, { useContext, useEffect } from "react";
 import { ThreeDots } from 'react-loader-spinner';
 
-export default function Habits() {
+export default function Habits(props) {
     const context = useContext(Context);
 
     const weekdaysNumbers = [0, 1, 2, 3, 4, 5, 6];
@@ -23,7 +23,6 @@ export default function Habits() {
     const [showCreateCard, setShowCreateCard] = React.useState(false);
     const [habitName, setHabitName] = React.useState("");
     const [isSubmitting, setIsSubmitting] = React.useState(false);
-    const [habits, setHabits] = React.useState([]);
     const [selectedIndexes, setSelectedIndexes] = React.useState([]);
 
     const urlHabit = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
@@ -62,7 +61,7 @@ export default function Habits() {
     function listHabits() {
         const promise = axios.get(urlHabit, config);
         promise.then(response => {
-            setHabits(response.data);
+            props.setHabits(response.data);
         });
     }
 
@@ -77,7 +76,7 @@ export default function Habits() {
     useEffect(() => {
         const promise = axios.get(urlHabit, config);
         promise.then(response => {
-            setHabits(response.data);
+            props.setHabits(response.data);
         });
     }, []);
 
@@ -123,9 +122,9 @@ export default function Habits() {
                 </div>
             </CardCreateHabit>
 
-            {habits.length > 0 ? (
+            {context.habits.length > 0 ? (
                 <>
-                    {habits.map((h) => (
+                    {context.habits.map((h) => (
                         <CardHabit data-test="habit-container" key={h.id}>
                             <div>
                                 <p data-test="habit-name">{h.name}</p>
@@ -253,6 +252,7 @@ div:nth-child(1){
         font-size: 25px;
         margin-right: 5px;
         z-index: 0;
+        cursor: pointer;
     }
 }
 div:nth-child(2){
