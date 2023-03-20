@@ -1,15 +1,13 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import Context from "../Context";
 import React, { useContext } from "react";
 
 export default function Header() {
-    const navigate = useNavigate();
     const context = useContext(Context);
 
     return (
         <HeaderContainer data-test="header">
-            <h1 onClick={() => navigate("/")}>TrackIt</h1>
+            <h1>TrackIt</h1>
             <img src={context.imageURL} />
         </HeaderContainer>
     )

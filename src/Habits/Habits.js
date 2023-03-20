@@ -110,7 +110,7 @@ export default function Habits(props) {
                 </div>
 
                 <div>
-                    <button data-test="habit-create-cancel-btn" onClick={() => setShowCreateCard(false)}>Cancelar</button>
+                    <button data-test="habit-create-cancel-btn" onClick={() => setShowCreateCard(false)} disabled={isSubmitting}>Cancelar</button>
                     <button
                         data-test="habit-create-save-btn"
                         style={isSubmitting ? { opacity: 0.7 } : null}

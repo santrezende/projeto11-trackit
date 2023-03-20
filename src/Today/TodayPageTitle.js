@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const TodayPageTitle = styled.div`
 display: flex;
@@ -18,7 +18,7 @@ height: 10vh;
 
     p:last-child{
         font-size: 18px;
-        color: #BABABA;
+        color: ${props => props.colorPercentage ? "#8FC549" : "#BABABA"};
         margin-top: 5px;
     }
 `

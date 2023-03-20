@@ -31,13 +31,20 @@ export default function Today() {
     };
 
     const [todayHabits, setTodayHabits] = React.useState([]);
+    const [habitsPercentage, setHabitsPercentage] = React.useState(0);
 
     useEffect(() => {
         const promise = axios.get(urlToday, config);
         promise.then(response => setTodayHabits(response.data));
 
         const arrayNumberHabits = todayHabits.map(h => h.done);
-        console.log(arrayNumberHabits)
+        let doneHabits = 0;
+        for (let i = 0; i < arrayNumberHabits.length; i++) {
+            if (arrayNumberHabits[i] == true) {
+                doneHabits++;
+            }
+        }
+        setHabitsPercentage(parseInt((doneHabits / arrayNumberHabits.length) * 100));
     });
 
     function checkHabit(done, id) {
@@ -56,20 +63,30 @@ export default function Today() {
         <Screen>
             <Header />
 
-            <TodayPageTitle>
+            <TodayPageTitle colorPercentage={todayHabits.length > 0 ? true : false}>
                 <p data-test="today">{diaDaSemana}, {dataFormatada}</p>
-                <p data-test="today-counter">Nenhum hábito concluído ainda</p>
+                {todayHabits.length > 0 ? (
+                    <p data-test="today-counter">{habitsPercentage}% dos hábitos concluídos</p>
+                ) : (
+                    <p data-test="today-counter">Nenhum hábito concluído ainda</p>
+                )
+                }
             </TodayPageTitle>
 
             {todayHabits.map((h) => (
                 <TodayHabitCard data-test="today-habit-container" key={h.id}>
                     <div>
                         <p data-test="today-habit-name">{h.name}</p>
-                        <p data-test="today-habit-sequence">Sequência atual: {h.currentSequence} dias</p>
-                        <p data-test="today-habit-record">Seu recorde: {h.highestSequence} dias</p>
+                        <AtualSequence isDone={h.done} data-test="today-habit-sequence">
+                            Sequência atual: <span>{h.currentSequence} dias</span>
+                        </AtualSequence>
+
+                        <Record recordColor={(h.currentSequence == h.highestSequence) && (h.currentSequence > 0) ? true : false} data-test="today-habit-record">
+                            Seu recorde: <span>{h.highestSequence} dias</span>
+                        </Record>
                     </div>
                     <div>
-                        <CheckBtn isDone={h.done} onClick={() => checkHabit(h.done, h.id)}><ion-icon name="checkmark-sharp"></ion-icon></CheckBtn>
+                        <CheckBtn data-test="today-habit-check-btn" isDone={h.done} onClick={() => checkHabit(h.done, h.id)}><ion-icon name="checkmark-sharp"></ion-icon></CheckBtn>
                     </div>
                 </TodayHabitCard>
             ))}
@@ -106,14 +123,31 @@ p:nth-child(1){
     line-height: 25px;
     color: #666666;
 }
+`
 
-p:nth-child(2), p:nth-child(3){
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    color: #666666;
-    margin-top: 5px;
+const AtualSequence = styled.p`
+font-family: 'Lexend Deca';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+color: #666666;
+margin-top: 5px;
+
+span{
+    color: ${props => props.isDone ? "#8FC549" : "#666666"};
+}
+`
+
+const Record = styled.p`
+font-family: 'Lexend Deca';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+color: #666666;
+margin-top: 3px;
+
+span{
+    color: ${props => props.recordColor ? "#8FC549" : "#666666"};
 }
 `
 
