@@ -10,15 +10,9 @@ import { ThreeDots } from 'react-loader-spinner';
 export default function Habits() {
     const context = useContext(Context);
 
-    const weekdays = [
-        { id: 0, name: "D" },
-        { id: 1, name: "S" },
-        { id: 2, name: "T" },
-        { id: 3, name: "Q" },
-        { id: 4, name: "Q" },
-        { id: 5, name: "S" },
-        { id: 6, name: "S" }
-    ];
+    const weekdaysNumbers = [0, 1, 2, 3, 4, 5, 6];
+
+    const weekdaysName = ["D", "S", "T", "Q", "Q", "S", "S"];
 
     const config = {
         headers: {
@@ -27,42 +21,26 @@ export default function Habits() {
     };
 
     const [showCreateCard, setShowCreateCard] = React.useState(false);
-    const [buttonColors, setButtonColors] = React.useState(weekdays.map(d => ({ id: d.id, isSelected: false })));
-    const [daysHabit, setDayHabit] = React.useState([]);
     const [habitName, setHabitName] = React.useState("");
-    const [daysArray, setDaysArray] = React.useState(null);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [habits, setHabits] = React.useState([]);
-    const [renderEmptyPage, setRenderEmptyPage] = React.useState(true);
+    const [selectedIndexes, setSelectedIndexes] = React.useState([]);
 
     const urlHabit = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
 
     const habitTemplate = {
         name: habitName,
-        days: daysArray
+        days: selectedIndexes
     }
 
-    function selectDays(id) {
-        setButtonColors(buttonColors.map(button => {
-            if (button.id === id) {
-
-                if (!button.isSelected) {
-                    setDayHabit([...daysHabit, { id: button.id }]);
-                } else {
-                    setDayHabit(daysHabit.filter(day => day.id !== button.id));
-                }
-
-                return {
-                    ...button,
-                    isSelected: !button.isSelected,
-                };
-            }
-            return button;
-        }));
-        setDaysArray(daysHabit.map((d) => d.id));
+    function selectDays(index) {
+        if (selectedIndexes.includes(index)) {
+            setSelectedIndexes(selectedIndexes.filter(i => i !== index));
+        } else {
+            setSelectedIndexes([...selectedIndexes, index]);
+        }
     }
 
-    setInterval(() => setDaysArray(daysHabit.map((d) => d.id)), 500);
 
     function createHabit() {
         setIsSubmitting(true);
@@ -72,8 +50,8 @@ export default function Habits() {
             setIsSubmitting(false);
             setShowCreateCard(false);
             setHabitName("");
-            setDayHabit([]);
-            setButtonColors(weekdays.map(d => ({ id: d.id, isSelected: false })));
+            setSelectedIndexes([]);
+            listHabits();
         });
         promise.catch(error => {
             alert(error.response.data.message);
@@ -83,15 +61,24 @@ export default function Habits() {
 
     function listHabits() {
         const promise = axios.get(urlHabit, config);
-        promise.then(response => setHabits(response.data));
+        promise.then(response => {
+            setHabits(response.data);
+        });
+    }
+
+    function deleteHabit(index) {
+        const confirm = window.confirm("Deseja realmente apagar o hábito?");
+        if (confirm == true) {
+            const promise = axios.delete(`${urlHabit}/${index}`, config);
+            promise.then(() => listHabits());
+        }
     }
 
     useEffect(() => {
-        setRenderEmptyPage(false);
-        listHabits();
-        if (habits == []) {
-            setRenderEmptyPage(true);
-        }
+        const promise = axios.get(urlHabit, config);
+        promise.then(response => {
+            setHabits(response.data);
+        });
     }, []);
 
     return (
@@ -100,27 +87,33 @@ export default function Habits() {
 
             <HabitsPageTitle>
                 <p>Meus Habitos</p>
-                <button onClick={() => setShowCreateCard(true)}>+</button>
+                <button data-test="habit-create-btn" onClick={() => setShowCreateCard(true)}>+</button>
             </HabitsPageTitle>
 
-            <CardCreateHabit showCreateCard={showCreateCard}>
-                <input disabled={isSubmitting} value={habitName} type="text" placeholder="nome do hábito" onChange={event => setHabitName(event.target.value)} />
+            <CardCreateHabit data-test="habit-create-container" showCreateCard={showCreateCard}>
+                <input data-test="habit-name-input" disabled={isSubmitting} value={habitName} type="text" placeholder="nome do hábito" onChange={event => setHabitName(event.target.value)} />
                 <div>
-                    {weekdays.map((d) =>
+                    {weekdaysName.map((d, index) =>
                         <Botao
+                            data-test="habit-day"
                             disabled={isSubmitting}
-                            colorButton={buttonColors.find(button => button.id === d.id)?.isSelected}
-                            onClick={() => selectDays(d.id)}
-                            key={d.id}
+                            onClick={() => selectDays(index)}
+                            key={index}
+                            style={{
+                                backgroundColor: selectedIndexes.includes(index) ? '#D4D4D4' : '#FAFAFA',
+                                color: selectedIndexes.includes(index) ? '#FAFAFA' : '#D4D4D4'
+                            }}
                         >
-                            <p>{d.name}</p>
+                            <p>{d}</p>
                         </Botao>
                     )}
+
                 </div>
 
                 <div>
-                    <button onClick={() => setShowCreateCard(false)}>Cancelar</button>
+                    <button data-test="habit-create-cancel-btn" onClick={() => setShowCreateCard(false)}>Cancelar</button>
                     <button
+                        data-test="habit-create-save-btn"
                         style={isSubmitting ? { opacity: 0.7 } : null}
                         disabled={isSubmitting}
                         onClick={createHabit}
@@ -130,29 +123,30 @@ export default function Habits() {
                 </div>
             </CardCreateHabit>
 
-            {habits.map((h) => (
-                <CardHabit key={h.id}>
-                    <div>
-                        <p>{h.name}</p>
-                        <ion-icon name="trash-sharp"></ion-icon>
-                    </div>
+            {habits.length > 0 ? (
+                <>
+                    {habits.map((h) => (
+                        <CardHabit data-test="habit-container" key={h.id}>
+                            <div>
+                                <p data-test="habit-name">{h.name}</p>
+                                <ion-icon data-test="habit-delete-btn" onClick={() => deleteHabit(h.id)} name="trash-sharp"></ion-icon>
+                            </div>
 
-                    <div>
-                        <p>D</p>
-                        <p>S</p>
-                        <p>T</p>
-                        <p>Q</p>
-                        <p>Q</p>
-                        <p>S</p>
-                        <p>S</p>
-                    </div>
-                </CardHabit>
-            ))}
+                            <div>
+                                {weekdaysNumbers.map((d) => (
+                                    <IconCard data-test="habit-day" key={d} isActive={h.days.includes(d)}>
+                                        {weekdaysName[d]}
+                                    </IconCard>
+                                ))}
+                            </div>
+                        </CardHabit>
 
-            {renderEmptyPage ? <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p> : null}
+                    ))}
+                </>
+            ) : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>}
 
             <Menu />
-        </Screen>
+        </Screen >
     )
 }
 
@@ -223,8 +217,8 @@ div:nth-child(3) {
 `
 
 const Botao = styled.button`
-background-color: ${props => props.colorButton ? "#D4D4D4" : "#FAFAFA"};
-color: ${props => props.colorButton ? "#FAFAFA" : "#D4D4D4"};
+background-color: #FAFAFA;
+color: #D4D4D4;
 width: 30px;
 height: 30px;
 border: 1px solid #D5D5D5;
@@ -264,22 +258,21 @@ div:nth-child(1){
 div:nth-child(2){
     margin-top: 10px;
     display: flex;
-
-    p{
-    background-color: #FFFFFF;
-    color: #D4D4D4;
-    width: 30px;
-    height: 30px;
-    border: 1px solid #D5D5D5;
-    border-radius: 5px;
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    margin-right: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
-}
+`
+const IconCard = styled.p`
+background-color: ${props => props.isActive ? "#D4D4D4" : "#FAFAFA"};
+color: ${props => props.isActive ? "#FAFAFA" : "#D4D4D4"};
+width: 30px;
+height: 30px;
+border: 1px solid #D5D5D5;
+border-radius: 5px;
+font-family: 'Lexend Deca';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+margin-right: 5px;
+display: flex;
+align-items: center;
+justify-content: center;
 `
